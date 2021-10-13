@@ -1,0 +1,28 @@
+{
+  "name": "pokemon",
+  "version": "1.0.0",
+  "description": "",
+  "main": "app.js",
+  "scripts": {
+    "start": "NODE_ENV=prod node server",
+    "dev": "nodemon server.js",
+    "test": "DEBUG=server:debug NODE_ENV=test mocha --recursive --exit --timeout 10000",
+    "test:pokemon": "npm test tests/pokemon"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "bcrypt": "^5.0.1",
+    "chai": "^4.3.4",
+    "express": "^4.17.1",
+    "mariadb": "^2.5.4",
+    "mocha": "^9.1.2",
+    "mysql2": "^2.3.0",
+    "nodemon": "^2.0.13",
+    "sequelize": "^6.6.5",
+    "supertest": "^6.1.6"
+  },
+  "devDependencies": {
+    "morgan": "^1.10.0"
+  }
+}
