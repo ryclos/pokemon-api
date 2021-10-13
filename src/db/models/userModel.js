@@ -30,30 +30,40 @@ const User = sequelize.define(
   {
     freezeTableName: true,
     timestamps: false,
-    hooks: {
-      beforeCreate: async (user) => {
-        const userPassword = user.getDataValue('password').toString();
-
-        const salt = await bcrypt.genSalt(10, 'a');
-        const userPasswordHashed = bcrypt.hashSync(userPassword, salt);
-
-        user.setDataValue('password', userPasswordHashed);
-      },
-    },
-    instanceMethods: {
-      validPassword: async (password) => {
-        try {
-          const user = this;
-          return await bcrypt.compareSync(password, user.password);
-        } catch (e) {
-          throw e;
-        }
-      },
-    },
   }
 );
-User.prototype.validPassword = async (password, hash) => {
-  return await bcrypt.compareSync(password, hash);
+
+User.beforeCreate(async (user) => {
+    const userPassword = user.password.toString();
+
+    const salt = await bcrypt.genSalt(10, 'a');
+    user.password = bcrypt.hashSync(userPassword, salt);
+
+})
+
+//User.beforeCreate( async (next) => {
+//    try {
+//        const user = this
+//        await bcrypt.genSalt(10, (err, salt) => {
+//            if(err) return next(err)
+//            bcrypt.hash(user.password, salt, (err, hash) => {
+//                if (err) return next(err)
+//                user.password = hash
+//                next()
+//            })
+//        })
+//    } catch (err) {
+//        if (err) console.log(err)
+//    }
+//})
+
+
+User.prototype.isValid = async (password, hash) => {
+    const user = this
+    bcrypt.compare(password, user.password, (err, isMatch) => {
+        if (err) return hash(err)
+        if (hash) hash(null, isMatch)
+    })
 };
 
 module.exports = User;

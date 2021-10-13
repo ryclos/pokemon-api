@@ -4,13 +4,13 @@ const { DataTypes } = require('sequelize');
 
 // Pokemon model
 const { STRING, INTEGER } = DataTypes;
-const Pokemon = sequelize.define('pokemons', { // J'ai remarqué que tu ne déclare pas de ID
+const Pokemon = sequelize.define('pokemons', {
   // ID existant par defaut, sauf si uuid ou autre
   name: {
     type: STRING,
     allowNull: false,
     notEmpty: true,
-    unique: { // Pas mal celui là c'est vrai qu'il est important
+    unique: {
       args: true,
       msg: 'Ce Pokémon existe déjà'
     },

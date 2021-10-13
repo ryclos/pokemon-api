@@ -1,8 +1,9 @@
 const { Sequelize } = require('sequelize');
 
-const sequelize = new Sequelize('pokedex', 'root', 'root', { //db, name, pass
+const sequelize = new Sequelize('pokedex', 'root', 'root', { // db, name, pass
   host: 'localhost',
-  dialect: 'mariadb', //type de database ex: postgresql, mysql2, mariadb, sqlite
+  port: 3306,
+  dialect: 'mariadb', // type de database ex: postgresql, mysql2, mariadb, sqlite
     dialectOptions: {
         timezone: 'Etc/GMT-10',
     },

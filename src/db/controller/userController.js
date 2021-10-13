@@ -3,10 +3,10 @@ const User = require('../models/userModel');
 const getAllUser = async (req, res) => {
   try {
     const users = await User.findAll();
-    res.status(200).json(users);
     if (users === null) {
       return res.status(404).json(users);
     }
+    res.status(200).json(users);
   } catch (e) {
     res.status(500).json(e);
   }
@@ -28,13 +28,7 @@ const getUserByPk = async (req, res) => {
 const registerUser = async (req, res) => {
   try {
     const user = req.body;
-
-    const newUser = await User.create({
-      username: user.username,
-      email: user.email,
-      password: user.password,
-    });
-
+    const newUser = await User.create(user);
     if (user === null) {
       return res.status(404);
     }
@@ -46,14 +40,14 @@ const registerUser = async (req, res) => {
 
 const loginUser = async (req, res) => {
   try {
-    const body = req.body.username;
-    const user = await User.findOne(body);
-    const isPasswordValid = req.hooks.validPassword();
-    if (isPasswordValid) {
-      const message = `L'utilisateur a été connecté avec succès`;
-      console.log(isPasswordValid);
-      return res.json({ message, data: user });
-    }
+    const body = req.body
+    const user = await User.findOne( {
+      where : {
+        email : body.email
+      }
+    })
+    await user.isValid(body.password)
+    res.json({msg: 'User has logged in'});
   } catch (error) {
     res.status(500).json(error);
   }
