@@ -36,10 +36,11 @@ const registerUser = async (req, res) => {
 const loginUser = async (req, res) => {
     try {
         const body = req.body.username;
-        const user = await User.findOne({ where: { username : body } });
+        const user = await User.findOne(body);
         const isPasswordValid = req.hooks.validPassword()
         if (isPasswordValid) {
             const message = `L'utilisateur a été connecté avec succès`;
+            console.log(isPasswordValid)
             return res.json({message, data: user})
         }
     } catch (error) {

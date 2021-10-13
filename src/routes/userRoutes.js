@@ -4,7 +4,7 @@ const controller = require('../db/controller/userController')
 
 router.get('/', controller.getAllUser)
 router.post('/', controller.registerUser)
-router.get('/:id', controller.getUserByPk)
+router.get('/:id', controller.loginUser)
 router.put('/:id', controller.updateUser)
 router.delete('/:id', controller.deleteUser)
 

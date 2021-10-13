@@ -33,23 +33,15 @@ const User = sequelize.define('user', {
     {
     hooks: {
         beforeCreate: async (user) => {
-            try {
-                if (user.password) {
-                    const salt = await bcrypt.genSaltSync(10, 'a');
-                    user.password = bcrypt.hashSync(user.password, salt);
-                }
-            } catch (e) {
-                throw e
+            if (user.password) {
+                const salt = await bcrypt.genSaltSync(10, 'a');
+                user.password = bcrypt.hashSync(user.password, salt);
             }
         },
         beforeUpdate: async (user) => {
-            try {
-                if (user.password) {
-                    const salt = await bcrypt.genSaltSync(10, 'a');
-                    user.password = bcrypt.hashSync(user.password, salt);
-                }
-            } catch (e) {
-                throw e
+            if (user.password) {
+                const salt = await bcrypt.genSaltSync(10, 'a');
+                user.password = bcrypt.hashSync(user.password, salt);
             }
         }
     },
