@@ -27,17 +27,18 @@ const getUserByPk = async (req, res) => {
 
 const registerUser = async (req, res) => {
   try {
-    const userInput = req.body;
-    const user = await User.create({
-      username: userInput.username,
-      email: userInput.email,
-      password: userInput.password,
+    const user = req.body;
+
+    const newUser = await User.create({
+      username: user.username,
+      email: user.email,
+      password: user.password,
     });
 
     if (user === null) {
-      return res.status(404).json(user);
+      return res.status(404);
     }
-    res.status(200).json(jane);
+    res.status(200).json(newUser);
   } catch (error) {
     res.status(500).json(error);
   }

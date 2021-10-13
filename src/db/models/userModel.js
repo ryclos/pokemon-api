@@ -27,10 +27,10 @@ const User = sequelize.define(
       type: STRING,
     },
   },
-  {
-    freezeTableName: true,
-    timestamps: false,
-  },
+  //   {
+  //     freezeTableName: true,
+  //     timestamps: false,
+  //   },
   {
     hooks: {
       beforeCreate: async (user) => {
