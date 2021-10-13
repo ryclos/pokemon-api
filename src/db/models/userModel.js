@@ -27,14 +27,13 @@ const User = sequelize.define(
       type: STRING,
     },
   },
-  //   {
-  //     freezeTableName: true,
-  //     timestamps: false,
-  //   },
   {
+    freezeTableName: true,
+    timestamps: false,
     hooks: {
       beforeCreate: async (user) => {
         const userPassword = user.getDataValue('password').toString();
+
         const salt = await bcrypt.genSalt(10, 'a');
         const userPasswordHashed = bcrypt.hashSync(userPassword, salt);
 
