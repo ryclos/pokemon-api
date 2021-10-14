@@ -22,5 +22,9 @@ app
     .use('/api/types', typeRoutes)
     .use('/api/user', userRoutes)
 
+// Error manager
+app.use((req, res) => {
+        res.sendStatus(404)
+    })
 
 module.exports = app;

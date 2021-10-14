@@ -34,35 +34,19 @@ const User = sequelize.define(
 );
 
 User.beforeCreate(async (user) => {
-    const userPassword = user.password.toString();
-
-    const salt = await bcrypt.genSalt(10, 'a');
-    user.password = bcrypt.hashSync(userPassword, salt);
-
+    try {
+        const salt = await bcrypt.genSalt(10, 'a');
+        return user.password = bcrypt.hashSync(user.password, salt);
+    } catch (err) {
+        console.log(err)
+    }
 })
 
-//User.beforeCreate( async (next) => {
-//    try {
-//        const user = this
-//        await bcrypt.genSalt(10, (err, salt) => {
-//            if(err) return next(err)
-//            bcrypt.hash(user.password, salt, (err, hash) => {
-//                if (err) return next(err)
-//                user.password = hash
-//                next()
-//            })
-//        })
-//    } catch (err) {
-//        if (err) console.log(err)
-//    }
-//})
-
-
-User.prototype.isValid = async (password, hash) => {
+User.prototype.isValid = async function(candidatePassword, hash) {
     const user = this
-    bcrypt.compare(password, user.password, (err, isMatch) => {
+    bcrypt.compare(candidatePassword, user.password, function(err, isValid) {
         if (err) return hash(err)
-        if (hash) hash(null, isMatch)
+        if (hash) return hash(null, isValid)
     })
 };
 

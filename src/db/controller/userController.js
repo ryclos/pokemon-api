@@ -1,12 +1,10 @@
 const User = require('../models/userModel');
 
-const getAllUser = async (req, res) => {
+const getAllUser = async (req, res, next) => {
   try {
     const users = await User.findAll();
-    if (users === null) {
-      return res.status(404).json(users);
-    }
     res.status(200).json(users);
+    next()
   } catch (e) {
     res.status(500).json(e);
   }
@@ -46,10 +44,12 @@ const loginUser = async (req, res) => {
         email : body.email
       }
     })
-    await user.isValid(body.password)
-    res.json({msg: 'User has logged in'});
+    await user.isValid(body.password, (err, isValid) => {
+      if (!isValid) { return res.json('Wrong password') }
+    })
+    res.json('You have logged in');
   } catch (error) {
-    res.status(500).json(error);
+    console.log(error);
   }
 };
 
