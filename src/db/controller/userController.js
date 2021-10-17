@@ -3,8 +3,8 @@ const User = require('../models/userModel');
 const getAllUser = async (req, res, next) => {
   try {
     const users = await User.findAll();
+    if (users === null) { return next() }
     res.status(200).json(users);
-    next()
   } catch (e) {
     res.status(500).json(e);
   }
@@ -44,8 +44,13 @@ const loginUser = async (req, res) => {
         email : body.email
       }
     })
-    await user.isValid(body.password, (err, isValid) => {
-      if (!isValid) { return res.json('Wrong password') }
+    //const validPassword = await user.isValid(body.password);
+    //if (!validPassword) {
+    //  return res.json("ton message")
+    //}
+    user.isValid(body.password, (err, isValid) => {
+      console.log(isValid)
+      if (!isValid) { return /*console.log(isValid)*/res.json('Wrong password') }
     })
     res.json('You have logged in');
   } catch (error) {

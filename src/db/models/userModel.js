@@ -4,9 +4,7 @@ const bcrypt = require('bcrypt');
 
 const { STRING } = DataTypes;
 
-const User = sequelize.define(
-  'user',
-  {
+const User = sequelize.define('user', {
     //ID auto
     username: {
       type: STRING,
@@ -42,11 +40,11 @@ User.beforeCreate(async (user) => {
     }
 })
 
-User.prototype.isValid = async function(candidatePassword, hash) {
+User.prototype.isValid = function(candidatePassword, cb) {
     const user = this
-    bcrypt.compare(candidatePassword, user.password, function(err, isValid) {
-        if (err) return hash(err)
-        if (hash) return hash(null, isValid)
+    return bcrypt.compare(candidatePassword, user.password, function(err, isValid) {
+        if (err) { return cb(err) }
+        if (cb) { return cb(null, isValid) }
     })
 };
 

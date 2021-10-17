@@ -12,7 +12,6 @@ const listen = app.listen(PORT, () => {
 });
 
 // Start server
-server.connect()
-  .then(() => {
-    return listen
+server.connect( () => {
+    return listen;
   });

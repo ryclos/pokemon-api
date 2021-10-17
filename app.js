@@ -11,9 +11,9 @@ const userRoutes = require('./src/routes/userRoutes')
 const app = express();
 
 // Application configuration
+app.use(morgan('dev'))
 app
-    .use(morgan('dev'))
-    .use(express.urlencoded({extended: false}))
+    .use(express.urlencoded({ extended: false }))
     .use(express.json())
 
 // Set routes
